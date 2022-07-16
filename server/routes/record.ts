@@ -23,7 +23,7 @@ recordRoutes.route("/").get(function (req, res) {
 });
 
 recordRoutes.route("/orders").post(function (req, response) {
-  let db_connect = dbo.getDb();
+  let db_connect = database.getDb();
   let order = {
     email: req.body.email,
     telephone: req.body.telephone,

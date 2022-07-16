@@ -1,0 +1,22 @@
+import * as Yup from "yup";
+
+const telephoneRegExp =
+  /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
+
+const yupCheck = Yup.object().shape({
+  email: Yup.string()
+    .email("Must be a valid email")
+    .max(100)
+    .required("Email is required"),
+  telephone: Yup.string().matches(telephoneRegExp, "Phone number is not valid"),
+  RAM: Yup.number()
+    .min(1)
+    .max(150, "Number is too high")
+    .required("RAM is required"),
+  screenSize: Yup.number()
+    .min(15, "Number is too low")
+    .max(40, "Number is too high")
+    .required("Screen size is Required"),
+});
+
+export { yupCheck };
