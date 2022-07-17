@@ -1,9 +1,8 @@
-import React from "react";
 import "../App.css";
 import { Formik, FormikHelpers } from "formik";
-import { yupCheck } from "./yupValidation";
+import { initialValues, yupCheck } from "../formik/formHelpers";
 
-export type FormData = {
+export type FormValues = {
   email: string;
   telephone: string;
   RAM: string;
@@ -13,22 +12,26 @@ export type FormData = {
 
 interface Props {
   onSubmit: (
-    values: FormData,
-    formikHelpers: FormikHelpers<FormData>
+    values: FormValues,
+    formikHelpers: FormikHelpers<FormValues>
   ) => void | Promise<void>;
+  RAM: number;
+  screenSize: number;
+  insurance: number;
+  isLoaderVisible: boolean;
 }
 
-function Form({ onSubmit }: Props) {
+function Form({
+  onSubmit,
+  RAM,
+  screenSize,
+  insurance,
+  isLoaderVisible,
+}: Props) {
   return (
     <div className="form">
       <Formik
-        initialValues={{
-          email: "",
-          telephone: "",
-          RAM: "",
-          screenSize: "",
-          insurance: false,
-        }}
+        initialValues={initialValues}
         validationSchema={yupCheck}
         validateOnChange={false}
         validateOnBlur={false}
@@ -107,12 +110,27 @@ function Form({ onSubmit }: Props) {
               <label className="insuranceLabel">insurance</label>
             </div>
 
-            <br />
-            {errors.insurance && touched.insurance && errors.insurance}
+            {values.RAM && values.screenSize ? (
+              <p className="currentPrice">
+                Current price:{" "}
+                {values.insurance
+                  ? Number(values.RAM) * RAM +
+                    Number(values.screenSize) * screenSize +
+                    insurance
+                  : Number(values.RAM) * RAM +
+                    Number(values.screenSize) * screenSize}
+              </p>
+            ) : (
+              <p className="currentPrice">
+                Fill in RAM and screen size to see current price
+              </p>
+            )}
 
             <button type="submit" disabled={isSubmitting} className="button">
               Submit
             </button>
+
+            {isLoaderVisible ? <div className="loader"></div> : null}
           </form>
         )}
       </Formik>
