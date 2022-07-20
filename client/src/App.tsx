@@ -10,7 +10,7 @@ function App() {
   const [isLoaderVisible, setLoaderVisible] = React.useState<boolean>(false);
 
   React.useEffect(() => {
-    async function getRecords() {
+    async function getResults() {
       const response = await fetch(`http://localhost:5000/prices`);
 
       if (!response.ok) {
@@ -19,13 +19,13 @@ function App() {
         return;
       }
 
-      const records = await response.json();
-      setScreenSize(records[0].screenSize);
-      setRAM(records[0].RAM);
-      setInsurance(records[0].insurance);
+      const results = await response.json();
+      setScreenSize(results[0].screenSize);
+      setRAM(results[0].RAM);
+      setInsurance(results[0].insurance);
     }
 
-    getRecords();
+    getResults();
 
     return;
   }, []);
